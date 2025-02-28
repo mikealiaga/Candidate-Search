@@ -1,66 +1,66 @@
 import { useState, useEffect } from "react";
-import { searchGithubUser } from "../api/API";
+import { fetchRandomGithubUser } from "../api/API";
 import { Candidate } from "../interfaces/Candidate.interface";
 
+
 const CandidateSearch = () => {
-  const [candidate, setCandidate] = useState<Candidate | null>(null);
+  const [currentCandidate, setCurrentCandidate] = useState<Candidate | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCandidate = async () => {
+  // Fetch a candidate from GitHub API
+  const loadCandidate = async () => {
     setLoading(true);
     setError(null);
-  
+
     try {
-      const data = await searchGithubUser();
-      console.log("Fetched new candidate:", data); // Debugging log
-  
-      if (!data || Object.keys(data).length === 0) {
-        console.error("API returned empty data:", data);
+      const candidate = await fetchRandomGithubUser();
+      console.log("Fetched candidate:", candidate);
+
+      if (!candidate || Object.keys(candidate).length === 0) {
         setError("No candidates available.");
-        setCandidate(null);
+        setCurrentCandidate(null);
       } else {
-        setCandidate(data);
+        setCurrentCandidate(candidate);
       }
     } catch (error) {
       console.error("Error fetching candidate:", error);
       setError("Failed to load candidate.");
-      setCandidate(null);
+      setCurrentCandidate(null);
     }
-  
+
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchCandidate(); // Load first candidate when page loads
+    loadCandidate();
   }, []);
 
-  const saveCandidate = () => {
-    if (!candidate) {
-        console.error("No candidate to save.");
-        return;
+  // Save candidate to localStorage and move to the next one
+  const handleSaveCandidate = () => {
+    if (!currentCandidate) {
+      console.error("No candidate to save.");
+      return;
     }
-
-    console.log("Saving candidate:", candidate);
 
     const savedCandidates = JSON.parse(localStorage.getItem("savedCandidates") || "[]");
 
-    if (!savedCandidates.some((c: Candidate) => c.id === candidate.id)) {
-        savedCandidates.push(candidate);
-        localStorage.setItem("savedCandidates", JSON.stringify(savedCandidates));
-        console.log("Candidate saved successfully! Current saved candidates:", savedCandidates);
+    if (!savedCandidates.some((c: Candidate) => c.id === currentCandidate.id)) {
+      savedCandidates.push(currentCandidate);
+      localStorage.setItem("savedCandidates", JSON.stringify(savedCandidates));
+      console.log("Candidate saved successfully!", savedCandidates);
     } else {
-        console.warn("Candidate already saved.");
+      console.warn("Candidate already saved.");
     }
 
-    fetchCandidate(); // Load the next candidate
-};
+    loadCandidate();
+  };
 
-// Skip candidate and load next one
-const skipCandidate = () => {
-  console.log("Skipping candidate:", candidate); // Debugging log
-  fetchCandidate();
-};
+  // Move to next candidate
+  const handleSkipCandidate = () => {
+    console.log("Skipping candidate:", currentCandidate);
+    loadCandidate();
+  };
 
   return (
     <div>
@@ -69,20 +69,20 @@ const skipCandidate = () => {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
-      {candidate && !loading && !error ? (
+      {currentCandidate && !loading && !error ? (
         <div className="candidate-card">
-          <img src={candidate.avatar_url} alt={candidate.name || "Unknown"} className="candidate-avatar" />
+          <img src={currentCandidate.avatar_url} alt={currentCandidate.name || "Unknown"} className="candidate-avatar" />
           <div>
             <h2 className="candidate-name">
-              {candidate.name || "No Name"} <em>({candidate.login})</em>
+              {currentCandidate.name || "No Name"} <em>({currentCandidate.login})</em>
             </h2>
-            <p>Location: {candidate.location || "Unknown"}</p>
-            <p>Email: <a href={`mailto:${candidate.email}`} className="candidate-link">{candidate.email || "Not Provided"}</a></p>
-            <p>Company: {candidate.company || "Not Provided"}</p>
+            <p>Location: {currentCandidate.location || "Unknown"}</p>
+            <p>Email: <a href={`mailto:${currentCandidate.email}`} className="candidate-link">{currentCandidate.email || "Not Provided"}</a></p>
+            <p>Company: {currentCandidate.company || "Not Provided"}</p>
             <p className="candidate-bio">
-              <strong>Bio:</strong> {candidate && candidate.bio ? candidate.bio : "No bio available."}
+              <strong>Bio:</strong> {currentCandidate.bio ? currentCandidate.bio : "No bio available."}
             </p>
-            <a href={candidate.html_url} target="_blank" rel="noopener noreferrer" className="candidate-link">
+            <a href={currentCandidate.html_url} target="_blank" rel="noopener noreferrer" className="candidate-link">
               GitHub Profile
             </a>
           </div>
@@ -91,10 +91,10 @@ const skipCandidate = () => {
         !loading && <p>No more candidates available.</p>
       )}
 
-      {candidate && (
+      {currentCandidate && (
         <div className="button-container">
-          <button onClick={skipCandidate} className="skip-button">-</button>
-          <button onClick={saveCandidate} className="save-button">+</button>
+          <button onClick={handleSkipCandidate} className="skip-button">-</button>
+          <button onClick={handleSaveCandidate} className="save-button">+</button>
         </div>
       )}
     </div>

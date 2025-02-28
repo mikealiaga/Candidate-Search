@@ -1,27 +1,30 @@
-/* Navigation Bar Styles */
 .nav {
-    background: #333;
-    padding: 10px;
+    background-color: #333;
+    padding: 15px;
   }
   
   .nav-list {
     list-style: none;
     display: flex;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
+    gap: 20px;
   }
   
   .nav-item {
-    margin: 0 15px;
-  }
-  
-  .nav-link {
-    color: #fff;
-    text-decoration: none;
     font-size: 18px;
   }
   
+  .nav-link {
+    text-decoration: none;
+    color: white;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+  }
+  
   .nav-link:hover {
-    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .nav-item.active .nav-link {
+    font-weight: bold;
+    border-bottom: 2px solid white;
   }

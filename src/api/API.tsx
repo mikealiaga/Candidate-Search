@@ -1,5 +1,6 @@
-export const searchGithubUser = async () => {
-  const apiUrl = "https://api.github.com/users?since=" + Math.floor(Math.random() * 1000); // Get random users
+export const fetchRandomGithubUser = async () => {
+  const startUserId = Math.floor(Math.random() * 900000) + 100;
+  const apiUrl = `https://api.github.com/users?since=${startUserId}`;
   const token = import.meta.env.VITE_GITHUB_TOKEN;
 
   const headers: HeadersInit = {};
@@ -8,25 +9,28 @@ export const searchGithubUser = async () => {
   }
 
   try {
-      console.log("Fetching from:", apiUrl);
-      console.log("Using Token:", token ? "Yes" : "No");
+      console.log("Requesting GitHub API:", apiUrl);
+      console.log("Authorization Used:", token ? "Yes" : "No");
 
       const response = await fetch(apiUrl, { headers });
 
       if (!response.ok) {
-          throw new Error(`API Error: ${response.status} ${response.statusText}`);
+          throw new Error(`GitHub API Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("API returned:", data);
+      console.log("GitHub API Response:", data);
 
       if (Array.isArray(data) && data.length > 0) {
-          return data[Math.floor(Math.random() * data.length)]; // Pick a random user
+          const selectedUser = data[Math.floor(Math.random() * data.length)];
+          console.log("Selected Candidate:", selectedUser);
+          return selectedUser;
       } else {
+          console.warn("GitHub API returned an empty list.");
           return null;
       }
   } catch (error) {
-      console.error("Error fetching candidate:", error);
+      console.error("Error retrieving GitHub user:", error);
       return null;
   }
 };
