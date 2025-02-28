@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchRandomGithubUser } from "../api/API";
 import { Candidate } from "../interfaces/Candidate.interface";
+import "../styles/styles.css";
 
 
 const CandidateSearch = () => {
@@ -66,13 +67,13 @@ const CandidateSearch = () => {
     <div>
       <h1>Candidate Search</h1>
 
-      {loading && <p>Loading...</p>}
+      
       {error && <p>{error}</p>}
 
       {currentCandidate && !loading && !error ? (
         <div className="candidate-card">
           <img src={currentCandidate.avatar_url} alt={currentCandidate.name || "Unknown"} className="candidate-avatar" />
-          <div>
+          <div className="candidate-info">
             <h2 className="candidate-name">
               {currentCandidate.name || "No Name"} <em>({currentCandidate.login})</em>
             </h2>
@@ -80,7 +81,7 @@ const CandidateSearch = () => {
             <p>Email: <a href={`mailto:${currentCandidate.email}`} className="candidate-link">{currentCandidate.email || "Not Provided"}</a></p>
             <p>Company: {currentCandidate.company || "Not Provided"}</p>
             <p className="candidate-bio">
-              <strong>Bio:</strong> {currentCandidate.bio ? currentCandidate.bio : "No bio available."}
+              Bio: {currentCandidate.bio ? currentCandidate.bio : "No bio available."}
             </p>
             <a href={currentCandidate.html_url} target="_blank" rel="noopener noreferrer" className="candidate-link">
               GitHub Profile

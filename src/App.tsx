@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<CandidateSearch />} />
           <Route path="/saved" element={<SavedCandidates />} />
-          <Route path="*" element={<ErrorPage />} /> {/* Handles all unknown routes */}
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>
     </>

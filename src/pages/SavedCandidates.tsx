@@ -5,9 +5,8 @@ import "../styles/table.css";
 
 const SavedCandidates = () => {
   const [candidatesList, setCandidatesList] = useState<Candidate[]>([]);
-  const location = useLocation(); // Track route changes
+  const location = useLocation();
 
-  // Function to ensure candidates load correctly
   const retrieveSavedCandidates = () => {
     try {
       const storedData = localStorage.getItem("savedCandidates");
@@ -26,24 +25,22 @@ const SavedCandidates = () => {
         return;
       }
 
-      console.log("✅ Loaded candidates from localStorage:", parsedCandidates);
-      setCandidatesList([...parsedCandidates]); // Force state update
+      console.log("Loaded candidates", parsedCandidates);
+      setCandidatesList([...parsedCandidates]);
     } catch (error) {
-      console.error("❌ Error retrieving saved candidates:", error);
+      console.error("Error retrieving saved candidates:", error);
       setCandidatesList([]);
     }
   };
 
-  // Ensure component reloads correctly when navigating
   useEffect(() => {
     console.log("🔄 Navigated to:", location.pathname);
     retrieveSavedCandidates();
-  }, [location.key]); // Use `location.key` to force reloading
+  }, [location.key]);
 
-  // Remove a candidate from the saved list
   const handleRemoveCandidate = (id: number) => {
     const updatedList = candidatesList.filter((candidate) => candidate.id !== id);
-    setCandidatesList([...updatedList]); // Force state update
+    setCandidatesList([...updatedList]);
     localStorage.setItem("savedCandidates", JSON.stringify(updatedList));
     console.log("Removed candidate with ID:", id);
   };
