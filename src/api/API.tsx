@@ -1,44 +1,32 @@
-const searchGithub = async () => {
+export const searchGithubUser = async () => {
+  const apiUrl = "https://api.github.com/users?since=" + Math.floor(Math.random() * 1000); // Get random users
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+
+  const headers: HeadersInit = {};
+  if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+  }
+
   try {
-    const start = Math.floor(Math.random() * 100000000) + 1;
-    // console.log(import.meta.env);
-    const response = await fetch(
-      `https://api.github.com/users?since=${start}`,
-      {
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-        },
+      console.log("Fetching from:", apiUrl);
+      console.log("Using Token:", token ? "Yes" : "No");
+
+      const response = await fetch(apiUrl, { headers });
+
+      if (!response.ok) {
+          throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
-    );
-    // console.log('Response:', response);
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
-    }
-    // console.log('Data:', data);
-    return data;
-  } catch (err) {
-    // console.log('an error occurred', err);
-    return [];
+
+      const data = await response.json();
+      console.log("API returned:", data);
+
+      if (Array.isArray(data) && data.length > 0) {
+          return data[Math.floor(Math.random() * data.length)]; // Pick a random user
+      } else {
+          return null;
+      }
+  } catch (error) {
+      console.error("Error fetching candidate:", error);
+      return null;
   }
 };
-
-const searchGithubUser = async (username: string) => {
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}`, {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
-    }
-    return data;
-  } catch (err) {
-    // console.log('an error occurred', err);
-    return {};
-  }
-};
-
-export { searchGithub, searchGithubUser };

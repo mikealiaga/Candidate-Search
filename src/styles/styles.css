@@ -1,0 +1,42 @@
+.saved-candidates-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    display: table !important;
+    visibility: visible !important;
+}
+
+.saved-candidates-table th, .saved-candidates-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.saved-candidates-table th {
+    background-color: #333;
+    color: white;
+}
+
+.avatar {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.email-link, .github-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.reject-button {
+    background: #ff4d4d;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    border-radius: 4px;
+}
+
+.reject-button:hover {
+    background: #cc0000;
+}
