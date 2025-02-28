@@ -1,12 +1,19 @@
-import { Outlet } from 'react-router-dom';
-import Nav from './components/Nav';
+import { Routes, Route } from "react-router-dom";
+import CandidateSearch from "./pages/CandidateSearch";
+import SavedCandidates from "./pages/SavedCandidates";
+import Nav from "./components/Nav";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
     <>
       <Nav />
       <main>
-        <Outlet />
+        <Routes>
+          <Route path="/" element={<CandidateSearch />} />
+          <Route path="/saved" element={<SavedCandidates />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
       </main>
     </>
   );

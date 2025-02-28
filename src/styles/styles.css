@@ -1,0 +1,88 @@
+.candidate-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 320px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .candidate-info {
+    padding: 20px;
+  }
+  
+  .candidate-avatar {
+    width: 320px;
+    height: 320px;
+    border-radius: 16px 16px 0px 0px;
+    object-fit: cover;
+  }
+  
+  .candidate-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .candidate-card p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  
+  .candidate-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 16px;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .candidate-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: 24px;
+    margin-top: 15px;
+    width: 100%; 
+}
+  
+  .skip-button,
+  .save-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 48px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    width: 80px;
+    height: 80px;
+  }
+  
+  .skip-button {
+    background-color: #dc3545;
+  }
+  
+  .skip-button:hover {
+    background-color: #b52a37;
+  }
+  
+  .save-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .skip-button:active,
+  .save-button:active {
+    transform: scale(0.95);
+  }
