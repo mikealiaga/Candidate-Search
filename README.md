@@ -5,6 +5,8 @@
 A simple **React + TypeScript** web application that allows users to browse GitHub profiles, save potential candidates, and manage their list.
 
 
+## Deployed application
+**[Live Website](https://candidate-search-205g.onrender.com/)**
 
 ## Features
 - Fetches **random GitHub users** via the GitHub API.
